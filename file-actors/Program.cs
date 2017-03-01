@@ -1,25 +1,27 @@
-﻿using Akka.Actor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Akka.Actor;
 
-namespace console_actors
+namespace file_actors
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ActorSystem actorSystem = ActorSystem.Create("ConsoleActorSystem");
+            ActorSystem actorSystem = ActorSystem.Create("MyActorSystem");
 
-            
+            var tailCoordinatorProps = Props.Create(() => new TailCoordinatorActor());
+            var tailCoordinatorActor = actorSystem.ActorOf(tailCoordinatorProps, "tailCoordinatorActor");
+
             var consoleWriterProps = Props.Create(() =>
                 new ConsoleWriterActor());
-            var consoleWriterActor = actorSystem.ActorOf(consoleWriterProps,"consoleWriterActor");
+            var consoleWriterActor = actorSystem.ActorOf(consoleWriterProps, "consoleWriterActor");
 
             var validationActorProps = Props.Create(() =>
-                new ValidationActor(consoleWriterActor));
+                new FileValidatorActor(consoleWriterActor, tailCoordinatorActor));
             var validationActor = actorSystem.ActorOf(validationActorProps, "validationActor");
 
             Props consoleReaderProps = Props.Create<ConsoleReaderActor>(validationActor);

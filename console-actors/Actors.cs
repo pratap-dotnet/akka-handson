@@ -5,13 +5,13 @@ namespace console_actors
 {
     public class ConsoleReaderActor : UntypedActor
     {
-        private readonly IActorRef consoleWriterActor;
+        private readonly IActorRef validationActor;
         private readonly string ExitCommand = "Exit";
         public const string StartCommand = "Start";
 
-        public ConsoleReaderActor(IActorRef consoleWriterActor)
+        public ConsoleReaderActor(IActorRef validationActor)
         {
-            this.consoleWriterActor = consoleWriterActor;
+            this.validationActor = validationActor;
         }
 
         protected override void OnReceive(object message)
@@ -20,44 +20,20 @@ namespace console_actors
             {
                 DoPrintInstructions();
             }
-            else if (message is InputError)
-            {
-                consoleWriterActor.Tell(message as InputError);
-            }
             GetAndValidateInput();
         }
 
         private void GetAndValidateInput()
         {
             var message = Console.ReadLine();
-            if (string.IsNullOrEmpty(message))
-            {
-                Self.Tell(new NullInputError("No input received"));
-            }
-            else if (string.Equals(message, ExitCommand, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(message) && string.Equals(message, ExitCommand, StringComparison.OrdinalIgnoreCase))
             {
                 Context.System.Terminate();
+                return;
             }
-            else
-            {
-                var valid = IsValid(message);
-                if (valid)
-                {
-                    consoleWriterActor.Tell(new InputSuccess("Thank you! Message was valid."));
-                    Self.Tell(new ContinueProcessing());
-                }
-                else
-                {
-                    Self.Tell(new ValidationError("Invalid: input had odd number of characters."));
-                }
-            }
+            validationActor.Tell(message);
         }
-
-        private bool IsValid(string message)
-        {
-            return message.Length % 2 == 0;
-        }
-
+        
         private void DoPrintInstructions()
         {
             Console.WriteLine("Write whatever you want into the console!");
@@ -85,6 +61,42 @@ namespace console_actors
                 Console.WriteLine(message);
             }
             Console.ResetColor();
+        }
+    }
+
+    public class ValidationActor : UntypedActor
+    {
+        private readonly IActorRef consoleWriterActor;
+        public ValidationActor(IActorRef consoleWriterActor)
+        {
+            this.consoleWriterActor = consoleWriterActor;
+        }
+
+        protected override void OnReceive(object message)
+        {
+            var msg = message as string;
+
+            if (string.IsNullOrEmpty(msg))
+            {
+                consoleWriterActor.Tell(new InputError("No input received"));
+            }
+            else
+            {
+                if (IsValid(msg))
+                {
+                    consoleWriterActor.Tell(new InputSuccess("Thank you! message was valid"));
+                }
+                else
+                {
+                    consoleWriterActor.Tell(new InputError("message was invalid"));
+                }
+            }
+            Sender.Tell(new ContinueProcessing());
+        }
+
+        private bool IsValid(string message)
+        {
+            return message.Length % 2 == 0;
         }
     }
 }
