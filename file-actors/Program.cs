@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Akka.Actor;
+﻿using Akka.Actor;
 
 namespace file_actors
 {
@@ -21,10 +16,10 @@ namespace file_actors
             var consoleWriterActor = actorSystem.ActorOf(consoleWriterProps, "consoleWriterActor");
 
             var validationActorProps = Props.Create(() =>
-                new FileValidatorActor(consoleWriterActor, tailCoordinatorActor));
+                new FileValidatorActor(consoleWriterActor));
             var validationActor = actorSystem.ActorOf(validationActorProps, "validationActor");
 
-            Props consoleReaderProps = Props.Create<ConsoleReaderActor>(validationActor);
+            Props consoleReaderProps = Props.Create<ConsoleReaderActor>();
             var consoleReaderActor = actorSystem.ActorOf(consoleReaderProps, "consoleReaderActor");
 
             consoleReaderActor.Tell(ConsoleReaderActor.StartCommand);
