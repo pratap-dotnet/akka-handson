@@ -56,8 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\ButtonToggleActor.cs" />
+    <Compile Include="Actors\Messages.cs" />
+    <Compile Include="Actors\PerformanceCounterActor.cs" />
+    <Compile Include="Actors\PerformanceCounterCoordinatorActor.cs" />
     <Compile Include="ChartDataHelper.cs" />
-    <Compile Include="ChartingActor.cs" />
+    <Compile Include="Actors\ChartingActor.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,8 +96,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Actors\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
