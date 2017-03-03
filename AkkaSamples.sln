@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file-actors", "file-actors\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "charting-actors", "charting-actors\charting-actors.csproj", "{0AAF9380-C870-4124-95A1-7C606D8F3BBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "github-actors", "github-actors\github-actors.csproj", "{57B9988A-F764-4C2E-8DE9-986014E71C10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0AAF9380-C870-4124-95A1-7C606D8F3BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AAF9380-C870-4124-95A1-7C606D8F3BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AAF9380-C870-4124-95A1-7C606D8F3BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57B9988A-F764-4C2E-8DE9-986014E71C10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57B9988A-F764-4C2E-8DE9-986014E71C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57B9988A-F764-4C2E-8DE9-986014E71C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57B9988A-F764-4C2E-8DE9-986014E71C10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
