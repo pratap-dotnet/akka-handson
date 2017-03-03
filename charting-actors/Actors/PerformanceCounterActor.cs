@@ -47,8 +47,8 @@ namespace charting_actors.Actors
         {
             _counter = _performanceCounterGenerator();
             Context.System.Scheduler.ScheduleTellRepeatedly(
-                TimeSpan.FromMilliseconds(250),
-                TimeSpan.FromMilliseconds(250),
+                TimeSpan.FromMilliseconds(25),
+                TimeSpan.FromMilliseconds(25),
                 Self,
                 new GatherMetrics(),
                 Self, _cancelPublishing);
