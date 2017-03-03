@@ -27,7 +27,7 @@ namespace charting_actors
         private void Main_Load(object sender, EventArgs e)
         {
             _chartActor = Program.ChartActors.ActorOf
-                (Props.Create(() => new ChartingActor(sysChart)), "charting");
+                (Props.Create(() => new ChartingActor(sysChart, btnPauseResume)), "charting");
 
             _chartActor.Tell(new ChartingActor.InitializeChart(null));
 
@@ -79,6 +79,11 @@ namespace charting_actors
         private void OnDiskClick(object sender, EventArgs e)
         {
             _toggleActors[CounterType.Disk].Tell(new ButtonToggleActor.Toggle());
+        }
+
+        private void btnPauseResume_Click(object sender, EventArgs e)
+        {
+            _chartActor.Tell(new ChartingActor.TogglePause());
         }
     }
 }
