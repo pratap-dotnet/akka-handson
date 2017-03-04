@@ -8,7 +8,7 @@ using charting_actors.Actors;
 
 namespace charting_actors
 {
-    public class ChartingActor : ReceiveActor
+    public class ChartingActor : ReceiveActor, IWithUnboundedStash
     {
         #region Messages
         public class TogglePause { }
@@ -47,7 +47,9 @@ namespace charting_actors
         private readonly Button _pauseButton;
         private readonly Chart _chart;
         private Dictionary<string, Series> _seriesIndex;
-        
+
+        public IStash Stash { get; set; }
+
         private void Charting()
         {
             Receive<InitializeChart>(m => HandleInitialize(m));
@@ -64,11 +66,15 @@ namespace charting_actors
 
         private void Paused()
         {
+            Receive<AddSeries>(m => Stash.Stash());
+            Receive<RemoveSeries>(m => Stash.Stash());
             Receive<Metric>(metric => HandleMetricsPaused(metric));
             Receive<TogglePause>(pause =>
             {
                 SetPauseButtonText(false);
                 UnbecomeStacked();
+
+                Stash.UnstashAll();
             });
         }
 
